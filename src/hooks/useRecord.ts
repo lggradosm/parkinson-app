@@ -5,8 +5,6 @@ export default function useRecord() {
   const [record, setRecord] = useState<null | Audio.Recording>(null);
   const COUNTER = 10 * 1000; // 10 segundos
   const [timeout, setTimeOut] = useState<NodeJS.Timeout | null>(null);
-
-
   const start = async () => {
     try {
       const perm = await Audio.requestPermissionsAsync();
@@ -19,14 +17,13 @@ export default function useRecord() {
         Audio.RecordingOptionsPresets.HIGH_QUALITY
       );
       setRecord(recording);
-
       return new Promise((resolve, reject) => {
         const timeout = setTimeout(async () => {
           try {
-            const audio = await stop(recording); // Asegúrate de que stop sea async si es necesario
+            const audio = await stop(recording); 
             resolve(audio);
           } catch (error) {
-            reject(null); // Si hay un error, lo capturamos y rechazamos la promesa
+            reject(null); 
           }
         }, COUNTER);
         setTimeOut(timeout);
@@ -36,12 +33,10 @@ export default function useRecord() {
       throw new Error("Error");
     }
   };
-
   const pause = async (audio: AudioType) => {
     if (timeout) clearTimeout(timeout);
     await audio.sound.pauseAsync();
   };
-
   const play = async (audio: AudioType) => {
     if (record) {
       await audio.sound.replayAsync();
@@ -53,7 +48,6 @@ export default function useRecord() {
       });
     }
   };
-
   const stop = async (recording: Audio.Recording) => {
     await recording.stopAndUnloadAsync();
     const uri = recording.getURI();
@@ -66,18 +60,15 @@ export default function useRecord() {
     };
     return audio;
   };
-
   const cancel = async () => {
     if (timeout) {
       clearTimeout(timeout);
       if (record) await record.stopAndUnloadAsync();
     }
   };
-
   const getDurationFormatted = (milliseconds: number) => {
     const seconds = milliseconds / 1000;
     return seconds;
   };
-
   return { play, start, cancel, pause };
 }

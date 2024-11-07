@@ -12,6 +12,7 @@ import useRecord from "../../hooks/useRecord";
 import CircularProgress from "./CircularProgress";
 import DetectorService from "../../services/DetectorService";
 import Error from "../../components/Error";
+import Instructions from "./Instructions";
 
 type Props = {
   navigation: any;
@@ -23,7 +24,7 @@ export default function RecordScreen({ navigation }: Props) {
   const isRecording = useBoolean();
   const isPlaying = useBoolean();
   const audioRecord = useRecord();
-  const { loading } = useMainContext();
+  const { loading, changeResult } = useMainContext();
   const [counter, setCounter] = useState(COUNTER);
   const [audio, setAudio] = useState<any>(null);
   const [timeout, setTimeOut] = useState<NodeJS.Timeout | null>(null);
@@ -59,7 +60,6 @@ export default function RecordScreen({ navigation }: Props) {
     setAudio(null);
     audioRecord.cancel();
     isRecording.desactivate();
-
     clearTimeOut();
   };
 
@@ -72,6 +72,7 @@ export default function RecordScreen({ navigation }: Props) {
     if (audio) pauseHandler();
     loading.activate();
     const response = await detectorService.detect(audio.file, paciente);
+    changeResult(response?.data.messaged);
     loading.desactivate();
     if (response && response.status) navigation.replace("ResultScreen");
     else error.activate();
@@ -113,16 +114,18 @@ export default function RecordScreen({ navigation }: Props) {
 
   return (
     <SafeAreaView style={styles.safearea}>
-      <View style={styles.container}>
-        <View style={{ flex: 1, height: 64, width: "100%" }}>
-          {isPlaying.status && (
-            <ButtonSecondary
-              title={"Detener reproducción"}
-              onPressHandler={pauseHandler}
-            />
-          )}
-        </View>
-        <View>
+      <View style={[styles.container]}>
+        {isPlaying.status && (
+          <View style={{ flex: 1, height: 64, width: "100%" }}>
+            {isPlaying.status && (
+              <ButtonSecondary
+                title={"Detener reproducción"}
+                onPressHandler={pauseHandler}
+              />
+            )}
+          </View>
+        )}
+        <View style={{ paddingHorizontal: 32 }}>
           <View style={{ minHeight: 32, marginBottom: 54 }}>
             {isRecordActive() && <RecordingIndicator text={indicatorText()} />}
           </View>
@@ -153,27 +156,34 @@ export default function RecordScreen({ navigation }: Props) {
             )}
           </TouchableOpacity>
         </View>
-
-        <View style={{ flex: 1, minHeight: 64, width: "100%" }}>
-          {isRecording.status && (
-            <View style={[styles.fullWidth]}>
-              <ButtonSecondary
-                onPressHandler={cancelHandler}
-                title="Detener grabación"
-              />
-            </View>
-          )}
-          {audio && (
-            <View style={styles.bButtons}>
-              <Button disabled={loading.status} title="Guardar" onPressHandler={detectHandler} />
-              <ButtonSecondary
-                title="Volver a grabar"
-                onPressHandler={retryHandler}
-              />
-            </View>
-          )}
-        </View>
+        {!isPlaying.status && (
+          <View style={{ width: "100%" }}>
+            {isRecording.status && (
+              <View style={[styles.fullWidth]}>
+                <ButtonSecondary
+                  onPressHandler={cancelHandler}
+                  title="Detener grabación"
+                />
+              </View>
+            )}
+            {audio && (
+              <View style={styles.bButtons}>
+                <Button
+                  disabled={loading.status}
+                  title="Realizar prueba"
+                  onPressHandler={detectHandler}
+                />
+                <ButtonSecondary
+                  title="Volver a grabar"
+                  onPressHandler={retryHandler}
+                />
+              </View>
+            )}
+          </View>
+        )}
       </View>
+
+      <Instructions />
       {loading.status && <Loading />}
       {error.status && (
         <Error

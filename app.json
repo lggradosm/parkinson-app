@@ -1,6 +1,6 @@
 {
   "expo": {
-    "name": "parkinson-app",
+    "name": "VoxParkinson",
     "slug": "parkinson-app",
     "version": "1.0.0",
     "orientation": "portrait",
@@ -9,7 +9,7 @@
     "splash": {
       "image": "./assets/splash.png",
       "resizeMode": "contain",
-      "backgroundColor": "#ffffff"
+      "backgroundColor": "#181822"
     },
     "ios": {
       "supportsTablet": true
@@ -19,7 +19,7 @@
         "foregroundImage": "./assets/adaptive-icon.png",
         "backgroundColor": "#ffffff"
       },
-      "package": "com.lggradosm.parkinsonapp",
+      "package": "com.lggradosm.parkinsonapp"
     },
     "web": {
       "favicon": "./assets/favicon.png"

@@ -1,8 +1,6 @@
 import { Paciente } from "../model/Paciente";
 
 export default function DetectorService() {
-  // const HOST = "192.168.0.14";
-  const HOST = "3.131.85.72";
   const detect = async (fileUri: any, paciente: Paciente | null) => {
     if (fileUri && paciente) {
       const formData = new FormData();
@@ -15,7 +13,7 @@ export default function DetectorService() {
       formData.append("paciente", JSON.stringify(paciente));
       try {
         const response = await fetch(
-          `http://ec2-3-131-85-72.us-east-2.compute.amazonaws.com:8000/api/upload/audio`,
+          `http://vps-4494122-x.dattaweb.com:8000/api/detectar`,
           {
             method: "POST",
             body: formData,

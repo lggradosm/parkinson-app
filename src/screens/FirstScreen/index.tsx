@@ -22,7 +22,7 @@ export default function FirstScreen({ navigation }: Props) {
   });
 
   const onNombreChange = (text: string) => {
-    const filteredText = text.replace(/[^a-zA-Z\s]/g, "");
+    const filteredText = text.replace(/[^a-zA-ZáéíóúÁÉÍÓÚñÑ\s]/g, "");
     setPaciente((prev) => ({ ...prev, nombre: filteredText }));
   };
 

@@ -9,8 +9,10 @@ type MainContextProvider = {
   paciente: Paciente | null;
   loading: useBooleanType;
   parkinsonResult: ParkinsonResult | null;
-  changePaciente: (paciente: Paciente) => void;
+  changePaciente: (paciente: Paciente | null) => void;
   changeParkinsonResult: (result: ParkinsonResult) => void;
+  result: string;
+  changeResult: (message: string) => void;
 };
 
 type Props = {
@@ -22,6 +24,11 @@ export function MainContextProvider({ children }: Props) {
   const loading = useBoolean(false);
   const [parkinsonResult, setParkinsonResult] =
     useState<ParkinsonResult | null>(null);
+  const [result, setResult] = useState("");
+
+  const changeResult = (message: string) => {
+    setResult(message);
+  };
 
   const changePaciente = (value: null | Paciente) => {
     setPaciente(value);
@@ -39,6 +46,8 @@ export function MainContextProvider({ children }: Props) {
         parkinsonResult,
         changePaciente,
         changeParkinsonResult,
+        result,
+        changeResult,
       }}
     >
       {children}

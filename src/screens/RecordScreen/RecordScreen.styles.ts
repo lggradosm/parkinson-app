@@ -3,7 +3,8 @@ import { colors } from "../../styles/globalStyles";
 
 const recordScreenStyles = StyleSheet.create({
   safearea: {
-    flex:1
+    flex:1,
+    height: "100%"
   },
   container: {
     flex: 1,
@@ -13,7 +14,7 @@ const recordScreenStyles = StyleSheet.create({
     justifyContent: "center",
     gap: 64,
     paddingVertical: 96,
-    paddingHorizontal: 64,
+    paddingHorizontal: 32,
   },
   spaceBetween: {
     justifyContent: "space-between",
@@ -47,7 +48,7 @@ const recordScreenStyles = StyleSheet.create({
   },
   buttonText:{
     color: "#fff",
-    fontSize: 48
+    fontSize: 36
     },
   counter:{
     color: "#fff",

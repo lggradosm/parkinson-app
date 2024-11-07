@@ -8,6 +8,7 @@ const buttonSecondaryStyles = StyleSheet.create({
     justifyContent: "center",
     alignItems: "center",
     borderRadius: 16,
+    backgroundColor: colors.background_2
   },
   enabled:{
   },
